@@ -1,0 +1,54 @@
+{% extends "Geeker/base.html" %}
+{% load geeker_extras %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>{{ ticket.title }}</h1>
+                </div>
+                <div class="panel-body">
+                    <h3>ticket description:</h3>
+                    <p>{{ ticket.description }}</p>
+                    <h3>Contact details:</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">Name: {{ ticket.name }}</li>
+                        <li class="list-group-item">Email: {{ ticket.email }}</li>
+                        <li class="list-group-item">Phone: {{ ticket.phone }}</li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-4">
+            <h2>Write a Review</h2>
+            <form method="post" action="/geeker/review/{{ ticket.id }}/">
+                {% csrf_token %}
+                {{ review_form.error }}
+                    {% for field in review_form %}
+                        <div class="row">
+                            <div class="col-md-2" style="text-align: right;">
+                                    {{ field.label }}
+                            </div>
+                            <div class="col-md-8">
+                                {{field|addcss:"form-control"}}
+                            </div>
+                            <div class="col-md-2">
+                                {% if field.help_text %}
+                                    <span class="help"> {{ field.help_text|safe }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <input type="submit" name="submit" value="Post Review" class="btn btn-default"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

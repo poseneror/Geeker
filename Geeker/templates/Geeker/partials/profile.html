@@ -1,0 +1,53 @@
+{% load geeker_extras %}
+<div class="thumbnail profile">
+    {% if profile.image %}
+        <div class="profile-picture" style="background-image: url({{ profile.image.url }});" alt="..."></div>
+    {% endif %}
+    <div class="caption">
+        <h3><a href="/geeker/profile/{{ profile.id }}">{{ profile.get_full_name }}</a>
+        <br><small class="rating">
+            {% if profile.get_rating %}
+                {% for star in profile.get_rating|rating|get_range %}
+                    <span class="glyphicon glyphicon-star"></span>
+                {% endfor %}
+
+            {% else %}
+                no rating yet!
+            {% endif %}
+        </small>
+        </h3>
+        <p>{{ profile.info|truncatewords:20 }}</p>
+        {% if profile.date_of_birth %}
+            Age: {{ profile.date_of_birth|age }}
+        {% endif %}
+        {% if profile.available %}
+            <span class="glyphicon glyphicon-ok-circle available"></span>
+        {% endif %}
+        <!--<div id="profileReviews" class="carousel slide text-center" data-ride="carousel">
+          <ol class="carousel-indicators">
+              {% for review in profile.ticket_set.all %}
+                {% if review.review_text %}
+                    <li data-target="#profileReviews" data-slide-to="{{forloop.counter0}}"></li>
+                {% endif %}
+              {% endfor %}
+          </ol>
+          <div class="carousel-inner" role="listbox">
+              {% for review in profile.ticket_set.all %}
+                  {% if review.review_text %}
+                    <div class="item">
+                        <h4>review.review_text<br><span style="font-style:normal;">the dude who wrote this</span></h4>
+                    </div>
+                  {% endif %}
+              {% endfor %}
+          </div>
+          <a class="left carousel-control" href="#profileReviews" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#profileReviews" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>-->
+    </div>
+</div>

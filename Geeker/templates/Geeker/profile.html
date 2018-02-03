@@ -1,0 +1,71 @@
+{% extends "Geeker/base.html" %}
+{% load geeker_extras %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thumbnail">
+                {% if profile.image %}
+                <img src="{{ profile.image.url }}" />
+                {% endif %}
+                <p>Joined: {{ profile.date_joined }}</p>
+                <p>Website: <a href="{{ profile.website }}">{{ profile.website }}</a></p>
+                <p>Email: {{ profile.email }}</p>
+                {% if user.id == profile.id %}
+                    <a href="edit">edit</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h1>{{ profile.get_full_name }}</h1>
+            <h4>Main field: {{ profile.field }}</h4>
+            <h4>About me:</h4>
+            <p style="word-break: keep-all;">{{ profile.info }}</p>
+            {% if profile.is_supplier %}
+                <div class="row">
+                {% for fl in profile.freelancers.all %}
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+                            {% if fl.image %}
+                            <img src="{{ fl.image.url }}" alt="{{ fl.first_name }}'s picture" />
+                            {% endif %}
+                            <div class="caption">
+                                <a href="/geeker/profile/{{ fl.id }}"><h3>{{ fl.get_full_name }}</h3></a>
+                                {% if fl.get_rating %}
+                                    {% for star in fl.get_rating|rating|get_range %}
+                                        <span class="glyphicon glyphicon-star"></span>
+                                    {% endfor %}
+                                {% else %}
+                                    No rating yet!
+                                {% endif %}
+                                <p>{{ fl.info }}</p>
+                                {% if fl.date_of_birth %}
+                                    <p>Age: {{ fl.date_of_birth|age }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            No freelancers under this supplier
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <h3>Reviews:</h3>
+            {% for review in reviews %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {{ review.title }} <span class="badge" style="float:right">{{ review.review_rating }}</span>
+                    </div>
+                    <div class="panel-body">
+                        {{ review.review_text }}
+                    </div>
+                </div>
+                {% empty %}
+                no reviews yet!
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

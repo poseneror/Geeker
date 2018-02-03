@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load staticfiles %}
+    {% load geeker_extras %}
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Geeker</title>
+
+    <!-- CSS -->
+    <link href="{%  static 'Geeker/bower_components/bootstrap/dist/css/bootstrap.css'  %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body id="GeekerPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">Geeker</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+
+                    {% if scrollers %}
+                        <ul class="nav navbar-nav navbar-right" id="scrollers">
+                        <li><a href="#about">ABOUT</a></li>
+                        <li><a href="#request">REQUEST</a></li>
+                        <li><a href="#experts">EXPERTS</a></li>
+                        <li><a href="#services">SERVICES</a></li>
+                        <li><a href="#pricing">PRICING</a></li>
+                        <li><a class="btn-switch collapsed"  data-toggle="collapse" href="#nav-user" aria-expanded="false" aria-controls="nav-user">
+                                <span class="glyphicon glyphicon-user"></span>
+                                {% if user.is_authenticated %}
+                                    {{ user.first_name }}
+                                {% else %}
+                                    Guest
+                                {% endif %}
+                        </a></li>
+                    {% else %}
+                        <ul class="nav navbar-nav navbar-right">
+                        {% if user.is_supplier %}
+                            <li><a href="/geeker/recruit/1">Recruit</a></li>
+                        {% endif %}
+                        {% if user.is_admin %}
+                            <li><a href="/admin/">Admin</a></li>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            {% if not user.is_supplier %}
+                                {% if user.available %}
+                                    <li><button class="btn btn-primary availability" onclick="toggleAvailability(true)">Available</button></li>
+                                {% else %}
+                                    <li><button class="btn btn-danger availability" onclick="toggleAvailability(false)">UnAvailable</button></li>
+                                {% endif %}
+                            {% endif %}
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                            <li><a href="/geeker/profile/{{ user.id }}">My Profile</a></li>
+                            <li><a href="{% url 'tickets' %}">
+                                Tickets
+                                {% if user.get_pending != 0 %}
+                                    <span class="badge">{{ user.get_pending }}</span>
+                                {% endif %}
+                                <span class="sr-only">(current)</span>
+                            </a></li>
+                        {% else %}
+                        <form class="navbar-form navbar-right" method="post" action="/geeker/login/">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="email" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" placeholder="Password">
+                            </div>
+                            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Sign In</button>
+                        </form>
+                        {% endif %}
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span>
+                                {% if user.is_authenticated %}
+                                    {{ user.first_name }}
+                                {% else %}
+                                    Guest
+                                {% endif %}
+                        </a></li>
+                    {% endif %}
+                </ul>
+                <ul class="collapse nav navbar-nav nav-collapse" id="nav-user">
+                    {% if user.is_supplier %}
+                        <li><a href="/geeker/recruit/1">Recruit</a></li>
+                    {% endif %}
+                    {% if user.is_admin %}
+                        <li><a href="/admin/">Admin</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        {% if not user.is_supplier %}
+                            {% if user.available %}
+                                <li><button class="btn btn-primary availability" onclick="toggleAvailability(true)">Available</button></li>
+                            {% else %}
+                                <li><button class="btn btn-danger availability" onclick="toggleAvailability(false)">UnAvailable</button></li>
+                            {% endif %}
+                        {% endif %}
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                        <li><a href="/geeker/profile/{{ user.id }}">My Profile</a></li>
+                        <li><a href="{% url 'tickets' %}">
+                            Tickets
+                            {% if user.get_pending != 0 %}
+                                <span class="badge">{{ user.get_pending }}</span>
+                            {% endif %}
+                            <span class="sr-only">(current)</span>
+                        </a></li>
+                    {% else %}
+                    <form class="navbar-form navbar-right" method="post" action="/geeker/login/">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="email" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-log-in"></span> Sign In</button>
+                    </form>
+                    <li><a href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+        {% block content %}{% endblock content %}
+
+    <!-- JAVA SCRIPT -->
+    <script src="{%  static "Geeker/bower_components/jquery/dist/jquery.js"  %}"></script>
+    <script src="{%  static "Geeker/bower_components/bootstrap/dist/js/bootstrap.js"  %}"></script>
+    <script src="{%  static "js/controller.js"  %}"></script>
+</body>
+</html>

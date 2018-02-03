@@ -1,0 +1,29 @@
+{% extends "Geeker/base.html" %}
+{% load geeker_extras %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>{{ job.job }}</h1>
+                </div>
+                <div class="panel-body">
+                    <h3>Job description:</h3>
+                    <p>{{ job.description }}</p>
+                    <h3>Contact details:</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">Name: {{ job.name }}</li>
+                        <li class="list-group-item">Email: {{ job.email }}</li>
+                        <li class="list-group-item">Phone: {{ job.phone }}</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            Job status: <h2 class="text-danger">PENDING</h2>
+            <button class="btn btn-danger">Reassign</button>
+        </div>
+    </div>
+
+{% endblock content %}

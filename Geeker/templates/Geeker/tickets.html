@@ -1,0 +1,48 @@
+{% extends "Geeker/base.html" %}
+{% load geeker_extras %}
+{% block content %}
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            {% if user.is_supplier %}<h2>Ticket Pickup:</h2>{% else %}<h2>Pending Tickets:</h2>{% endif %}
+            {% for ticket in latest_tickets %}
+                <div class="col-md-4">
+                    {% include 'geeker/partials/ticket.html' %}
+                </div>
+            {% empty %}
+                <div class="col-md-12">
+                    Sorry, no pending requests
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+        {% if pending_tickets %}
+            <h2>Pending requests:</h2>
+            {% for request in pending_tickets %}
+                <div class="col-md-12">
+                    <div class="panel panel-default ticket">
+                        <div class="panel-heading">
+                            {{ request.ticket.title }}
+                        </div>
+                        <div class="panel-body">
+                            {{ request.ticket.description }}
+                        </div>
+                        <div class="panel-footer">
+                            <a href="/geeker/ticket/{{ request.ticket.id }}">View Ticket</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if my_tickets %}
+            <h2>Pending Tickets</h2>
+            {% for ticket in  my_tickets %}
+                <div class="col-md-12">
+                    {% include 'geeker/partials/ticket.html' %}
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

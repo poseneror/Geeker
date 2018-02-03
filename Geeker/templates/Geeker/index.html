@@ -1,0 +1,185 @@
+{% extends "Geeker/base.html" %}
+{% load geeker_extras %}
+{% block content %}
+    <div id="about" class="jumbotron text-center">
+        <h1>Geeker <small>Drive your support SLA sky high</small></h1>
+        <p>With an easy registration, geeker drives an automated connection between
+        your ticketing system and a vast pool of verified Tech & IT experts.</p>
+    </div>
+    <div id="request" class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4" style="text-align: center;">
+                    <h2>Make a request</h2>
+                    <span class="glyphicon glyphicon-tag logo"></span>
+                </div>
+                <div class="col-sm-8 ticket-request">
+                    {% if request_form %}
+                    <form method="post" action="{% url 'index' %}">
+                        {% csrf_token %}
+                        {{ request_form.error }}
+                            <div class="col-md-6">
+                                {% with "form-control,"|add:request_form.name.label as myFilter %}
+                                    {{request_form.name|addcontrols:myFilter}}
+                                {% endwith %}
+                                <br>
+                                {% with "form-control,"|add:request_form.email.label as myFilter %}
+                                    {{request_form.email|addcontrols:myFilter}}
+                                {% endwith %}
+                                <br>
+                                {% with "form-control,"|add:"+972123456789" as myFilter %}
+                                    {{request_form.phone|addcontrols:myFilter}}
+                                {% endwith %}
+                                <br>
+                                <input type="submit" name="submit" value="Send Request" class="btn btn-default"/>
+                            </div>
+                            <div class="col-md-6">
+                                {% with "form-control,"|add:request_form.title.label as myFilter %}
+                                    {{request_form.title|addcontrols:myFilter}}
+                                {% endwith %}
+                                {% with "form-control,"|add:"describe the problem you're facing here..." as myFilter %}
+                                    {{request_form.description|addcontrols:myFilter}}
+                                {% endwith %}
+                            </div>
+                    </form>
+                    {% else %}
+                        THANK YOU!
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="experts" class="container-fluid text-center bg-grey">
+        <div class="container">
+            <h2>Our IT Experts</h2>
+            <h4>top quality Information Technology experts and problem fixers</h4>
+            <div class="row">
+                {% for profile in latest_profiles %}
+                    <div class="col-sm-3">
+                        {% include 'geeker/partials/profile.html' %}
+                    </div>
+                {% empty %}
+                    <div class="col-sm-12">
+                        Sorry, no geekers avilable!
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="services" class="container-fluid text-center">
+        <div class="container">
+            <h2>SERVICES</h2>
+            <h4>What we offer</h4>
+            <br>
+            <div class="row">
+                <div class="col-sm-4">
+                    <span class="glyphicon glyphicon-off logo-small"></span>
+                    <h4>REAL EXPERTS</h4>
+                    <p>our IT experts are being picked carefully by trustworthy service providers</p>
+                </div>
+                <div class="col-sm-4">
+                    <span class="glyphicon glyphicon-heart logo-small"></span>
+                    <h4>LOVE</h4>
+                    <p>Lorem ipsum dolor sit amet..</p>
+                </div>
+                <div class="col-sm-4">
+                    <span class="glyphicon glyphicon-lock logo-small"></span>
+                    <h4>JOB DONE</h4>
+                    <p>Lorem ipsum dolor sit amet..</p>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-sm-4">
+                    <span class="glyphicon glyphicon-leaf logo-small"></span>
+                    <h4>GREEN</h4>
+                    <p>Lorem ipsum dolor sit amet..</p>
+                </div>
+                <div class="col-sm-4">
+                    <span class="glyphicon glyphicon-certificate logo-small"></span>
+                    <h4>CERTIFIED</h4>
+                    <p>Lorem ipsum dolor sit amet..</p>
+                </div>
+                <div class="col-sm-4">
+                    <span class="glyphicon glyphicon-wrench logo-small"></span>
+                    <h4>HARD WORK</h4>
+                    <p>Lorem ipsum dolor sit amet..</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="pricing" class="container-fluid bg-grey">
+        <div class="container">
+            <div class="text-center">
+                <h2>Pricing</h2>
+                    <h4>Choose a payment plan that works for you</h4>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>Basic</h1>
+                        </div>
+                        <div class="panel-body">
+                            <p><strong>20</strong> Lorem</p>
+                            <p><strong>15</strong> Ipsum</p>
+                            <p><strong>5</strong> Dolor</p>
+                            <p><strong>2</strong> Sit</p>
+                            <p><strong>Endless</strong> Amet</p>
+                        </div>
+                        <div class="panel-footer plan">
+                            <h3>$19</h3>
+                            <h4>per month</h4>
+                            <button class="btn btn-lg">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>Basic</h1>
+                        </div>
+                        <div class="panel-body">
+                            <p><strong>20</strong> Lorem</p>
+                            <p><strong>15</strong> Ipsum</p>
+                            <p><strong>5</strong> Dolor</p>
+                            <p><strong>2</strong> Sit</p>
+                            <p><strong>Endless</strong> Amet</p>
+                        </div>
+                        <div class="panel-footer plan">
+                            <h3>$19</h3>
+                            <h4>per month</h4>
+                            <button class="btn btn-lg">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>Basic</h1>
+                        </div>
+                        <div class="panel-body">
+                            <p><strong>20</strong> Lorem</p>
+                            <p><strong>15</strong> Ipsum</p>
+                            <p><strong>5</strong> Dolor</p>
+                            <p><strong>2</strong> Sit</p>
+                            <p><strong>Endless</strong> Amet</p>
+                        </div>
+                        <div class="panel-footer plan">
+                            <h3>$19</h3>
+                            <h4>per month</h4>
+                            <button class="btn btn-lg">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="container-fluid text-center">
+      <a href="#GeekerPage" title="To Top">
+        <span class="glyphicon glyphicon-chevron-up"></span>
+      </a>
+      <p>Copyrights and shit</p>
+    </footer>
+{% endblock content %}

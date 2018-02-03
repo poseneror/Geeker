@@ -1,0 +1,75 @@
+{% extends "Geeker/base.html" %}
+{% load geeker_extras %}
+{% block content %}
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>{{ ticket.title }}</h1>
+                </div>
+                <div class="panel-body">
+                    <h3>ticket description:</h3>
+                    <p>{{ ticket.description }}</p>
+                    <h3>Contact details:</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">Name: {{ ticket.name }}</li>
+                        <li class="list-group-item">Email: {{ ticket.email }}</li>
+                        <li class="list-group-item">Phone: {{ ticket.phone }}</li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-4">
+            {% if user.is_supplier %}
+                {% if assigned %}
+                    Ticket request is pending for {{ assigned.assigned.get_full_name }}
+                {% elif ticket.assigned %}
+                    Ticket is assigned to {{ ticket.assigned.get_full_name }}
+                    {% if not ticket.solved %}
+                        <div class="text-warning">Ticket pending!</div>
+                    {% else %}
+                        <div class="text-primary">Ticket solved!</div>
+                    {% endif %}
+                {% else %}
+                    <h2>Assign to IT Expert:</h2>
+                    {% if user.freelancers %}
+                        <form method="post" action="/geeker/ticket/{{ ticket.id }}/">
+                            {% csrf_token %}
+                            <select name="fl">
+                                {% for fl in freelancers %}
+                                    <option value="{{ fl.id }}">{{ fl.get_full_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="submit">
+                        </form>
+                    {% else %}
+                        Please recruit some IT experts:
+                        <p>this could be a result of either</p>
+                        <ul>
+                            <li>You have no IT expert</li>
+                            <li>None of the It expert you have is available</li>
+                        </ul>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if assigned.assigned == user %}
+                    <form method="post" action="/geeker/ticket/{{ ticket.id }}/">
+                        {% csrf_token %}
+                        <button class="btn btn-primary" type="submit" name="submit">Take Ticket!</button>
+                    </form>
+                {% elif not ticket.solved %}
+                    <form method="post" action="/geeker/ticket/{{ ticket.id }}/">
+                        {% csrf_token %}
+                        <button class="btn btn-primary" type="submit" name="submit">Mark as solved</button>
+                    </form>
+                {% else %}
+                    <div class="text-primary">Problem solved!</div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
